@@ -1,10 +1,7 @@
 const express = require('express');
-
 const app = express();
+const productRoutes = require('./src/routes/products');
 
-app.use(() => {
-    console.log('server berhasil berjalan');
-    console.log('');  
-})
+app.use('/', productRoutes);
 
 app.listen(4000) // set port
