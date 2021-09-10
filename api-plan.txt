@@ -1,0 +1,83 @@
+Standar API
+
+{root.api}/{version}/{grouping}/{endpoint}
+group: Authentication
+
+ex route: https://api.my-site.com
+
+Standar status response:
+
+200 - OK ---------------------> Call API success 
+201 - CREATED ----------------> Post success
+400 - BAD REQUEST ------------> Error on client side
+401 - UNAUTHORIZED -----------> User not authorized to the request
+403 - FORBIDDEN --------------> User not allowed to access
+404 - NOT FOUND --------------> Request endpoint Not Found
+500 - INTERNAL SERVER ERROR --> Error on server side
+502 - BAD GATEWAY ------------> Invalid response from another request
+
+1. Group Authentication
+    - Register
+
+        {root.api}/{version}/auth/register
+
+        req: {
+            "name": "Name Test",
+            "email": "name@test.com"
+            "password": "**********"
+        }
+
+        res: {
+            "message": "Register Success",
+            "data": {
+                "id": 1
+                "name": "Name Test",
+                "email": "name@test.com"
+                "password": "**********"
+            }
+        }
+
+        err-response: 
+        400 --> input yang anda masukkan tidak valid
+
+    - Login
+        {root.api}/{version}/auth/login
+
+2. Group Blog
+    - create Blog
+        {root.api}/{version}/blog/post
+
+        req:
+        {
+            "title": "Title Blog",
+            "image": "imagefile.png",
+            "body": "Lorem ipsum is simply dummy text of the printing"
+        }
+
+        res:
+        {
+            "message": "Create Blog Post Success",
+            "data": {
+                "post_id": 1,
+                "title" : "Title Blog",
+                "image" : "imagefile.png",
+                "body" : "Lorem ipsum is simply dummy text off the printing",
+                "created_at": "12/06/2020",
+                "author" : {
+                    "uid" : 1,
+                    "name" : "Testing"
+                }
+            }
+        }
+
+        err-response:
+        201 -> Blog Post Berhasil Dibuat
+        400 -> Input yang anda masukkan tidak valid
+
+    - update Blog
+
+
+    - delete Blog
+
+
+    - get Blog
