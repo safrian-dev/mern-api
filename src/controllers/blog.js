@@ -81,3 +81,50 @@ exports.getBlogPostById = (req, res, next) => {
         next(err);
     });
 }
+
+exports.updateBlogPost = (req, res, next) => {
+    const erorrs = validationResult(req);
+    
+    if(!erorrs.isEmpty()){
+        const err = new Error('Invalid value');
+        err.errStatus = 400;
+        err.data = erorrs.array();
+        throw err;
+    }
+    
+    if(!req.file) {
+        const err = new Error('Image harus diupload');
+        err.errStatus = 422;
+        err.data = erorrs.array();
+        throw err;
+    }
+    
+    const title = req.body.title;
+    const image = req.file.path;
+    const body = req.body.body;
+    const postId = req.params.postId;
+
+    BlogPost.findById(postId)
+    .then(post => {
+        if(!post){
+            const err = new Error('Blog post tidak ditemukan');
+            err.errStatus = 404;
+            throw err;
+        }
+
+        post.title = title;
+        post.body = body;
+        post.image = image;
+        
+        return post.save();
+    })
+    .then(result => {
+        res.status(200).json({
+            message: 'Update post sukses',
+            data: result,
+        })
+    })
+    .catch(err => {
+        next(err);
+    });
+}
