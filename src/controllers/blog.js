@@ -46,3 +46,18 @@ exports.createBlogPost = (req, res, next) => {
         console.err('err :', err);
     });
 }
+
+exports.getAllBlogPost = (req, res, next) => {
+    //memanggil semua data post
+    BlogPost.find()
+    .then(result => {
+        res.status(200).json({
+            message: 'Data Blog Post berhasil dipanggil',
+            data: result
+        })
+    })
+    .catch(err => {
+        // info error akan langsung dikirimkan ke default error
+        next(err);
+    });
+}
