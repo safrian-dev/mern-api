@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const authRoutes = require('./src/routes/auth');
 const blogRoutes = require('./src/routes/blog');
 
@@ -35,6 +36,10 @@ app.use((error, req, res, next) => {
         data: data
     });
 
-})
+});
 
-app.listen(4000) // set port
+mongoose.connect('mongodb://rian:Mybp3dtwM729eOiZ@learn-nodejs-shard-00-00.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-01.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-02.3nsaa.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-khjmlp-shard-0&authSource=admin&retryWrites=true&w=majority')
+.then(() => {
+    app.listen(4000, () => console.log('Connection Success!')); // set port
+})
+.catch(err => console.log(err));
