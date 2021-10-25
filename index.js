@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const authRoutes = require('./src/routes/auth');
 const blogRoutes = require('./src/routes/blog');
 const multer = require('multer');
+const path = require('path');
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -28,8 +29,10 @@ const fileFilter = (req, file, cb) => {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());// data yang akan diterima adalah type json
+
 // middleware
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // mengatasi cors
 app.use((req, res, next) => {
