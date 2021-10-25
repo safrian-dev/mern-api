@@ -1,5 +1,8 @@
 const {validationResult} = require('express-validator');
 const BlogPost = require('../models/blog');
+const path = require('path');
+const fs = require('fs');
+const { restart } = require('nodemon');
 
 exports.createBlogPost = (req, res, next) => {
     
@@ -127,4 +130,41 @@ exports.updateBlogPost = (req, res, next) => {
     .catch(err => {
         next(err);
     });
+}
+
+exports.deleteBlogPost = (req, res, next) => {
+    const postId = req.params.postId;
+
+    BlogPost.findById(postId)
+    .then(post => {
+        if(!post){
+            const err = new Error('Blog post tidak ditemukan');
+            err.errStatus = 404;
+            throw err;
+        }
+
+        // hapus image
+        removeImage(post.image);
+
+        // hapus post
+        return BlogPost.findByIdAndRemove(postId);
+    })
+    .then(result => {
+        res.status(200).json({
+            message: 'Post berhasil dihapus',
+            data: result,
+        })
+    })
+    .catch(err => {
+        next(err);
+    })
+}
+
+// method hapus image
+const removeImage = (filePath) => {
+    // console.log('filePath', filePath);
+    // console.log('dir name: ', __dirname);
+
+    filePath = path.join(__dirname, '../../', filePath);
+    fs.unlink(filePath, err => console.log(err));
 }
