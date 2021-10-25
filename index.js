@@ -38,7 +38,7 @@ app.use((error, req, res, next) => {
 
 });
 
-mongoose.connect('mongodb://rian:Mybp3dtwM729eOiZ@learn-nodejs-shard-00-00.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-01.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-02.3nsaa.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-khjmlp-shard-0&authSource=admin&retryWrites=true&w=majority')
+mongoose.connect('mongodb://rian:Mybp3dtwM729eOiZ@learn-nodejs-shard-00-00.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-01.3nsaa.mongodb.net:27017,learn-nodejs-shard-00-02.3nsaa.mongodb.net:27017/blog?ssl=true&replicaSet=atlas-khjmlp-shard-0&authSource=admin&retryWrites=true&w=majority')
 .then(() => {
     app.listen(4000, () => console.log('Connection Success!')); // set port
 })
