@@ -51,18 +51,31 @@ exports.createBlogPost = (req, res, next) => {
 }
 
 exports.getAllBlogPost = (req, res, next) => {
-    //memanggil semua data post
+    // paging data & default value query
+    const currentPage = req.query.page || 1;
+    const perPage = req.query.perPage || 5;
+    let totalItems;
+
     BlogPost.find()
+    .countDocuments()
+    .then(count => {
+        totalItems = count;
+        return BlogPost.find()
+        .skip((parseInt(currentPage) -1) * parseInt(perPage))
+        .limit(parseInt(perPage));
+    })
     .then(result => {
         res.status(200).json({
             message: 'Data Blog Post berhasil dipanggil',
-            data: result
+            data: result,
+            total_data: totalItems,
+            per_page: parseInt(perPage),
+            current_page: parseInt(currentPage)
         })
     })
     .catch(err => {
-        // info error akan langsung dikirimkan ke default error
         next(err);
-    });
+    })
 }
 
 exports.getBlogPostById = (req, res, next) => {
